@@ -1,2 +1,2 @@
 # python_training
-Homework for python training
+Homework repository for python training
