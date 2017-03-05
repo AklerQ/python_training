@@ -26,13 +26,9 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
-    def create_contact(self, wd, firstname="Имя", middlename="Отчество/инициалы", lastname="Фамилия", nickname="Никнейм",
-                       companyname="Комания", address="Адрес", homenumber="Домашний телефон", worknumber="Рабочий телефон",
-                       email1="Электронная почта №1", email2="Электронная почта №2", notes="Текст заметки",
-                       birth_date="//div[@id='content']/form/select[1]//option[16]",
-                       birth_month="//div[@id='content']/form/select[2]//option[8]", birth_year="1987",
-                       annivesary_date="//div[@id='content']/form/select[3]//option[20]",
-                       annivesary_month="//div[@id='content']/form/select[4]//option[12]"):
+    def create_contact(self, wd, firstname, middlename, lastname, nickname, companyname, address, homenumber,
+                       worknumber, email1, email2, birth_date, birth_month, birth_year, anniversary_date,
+                       anniversary_month, notes):
         # create new contact
         wd.find_element_by_link_text("add new").click()
         # fill contact form
@@ -75,10 +71,10 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys(birth_year)
-        if not wd.find_element_by_xpath(annivesary_date).is_selected():
-            wd.find_element_by_xpath(annivesary_date).click()
-        if not wd.find_element_by_xpath(annivesary_month).is_selected():
-            wd.find_element_by_xpath(annivesary_month).click()
+        if not wd.find_element_by_xpath(anniversary_date).is_selected():
+            wd.find_element_by_xpath(anniversary_date).click()
+        if not wd.find_element_by_xpath(anniversary_month).is_selected():
+            wd.find_element_by_xpath(anniversary_month).click()
         # fill contact commentary
         wd.find_element_by_name("notes").click()
         wd.find_element_by_name("notes").clear()
@@ -96,7 +92,13 @@ class test_add_contact(unittest.TestCase):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.create_contact(wd)
+        self.create_contact(wd, firstname="Имя", middlename="Отчество/инициалы", lastname="Фамилия", nickname="Никнейм",
+                            companyname="Комания", address="Адрес", homenumber="Домашний телефон", worknumber=
+                            "Рабочий телефон", email1="Электронная почта №1", email2="Электронная почта №2",
+                            birth_date="//div[@id='content']/form/select[1]//option[16]",
+                            birth_month="//div[@id='content']/form/select[2]//option[8]", birth_year="1987",
+                            anniversary_date="//div[@id='content']/form/select[3]//option[20]",
+                            anniversary_month="//div[@id='content']/form/select[4]//option[12]", notes="Текст заметки")
         self.return_to_home_page(wd)
         self.logout(wd)
 
