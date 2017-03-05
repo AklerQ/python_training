@@ -3,12 +3,14 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 import unittest
 from contact import Contact
 
+
 def is_alert_present(wd):
     try:
         wd.switch_to_alert().text
         return True
     except:
         return False
+
 
 class test_add_contact(unittest.TestCase):
     def setUp(self):
