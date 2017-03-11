@@ -17,11 +17,13 @@ class test_add_contact(unittest.TestCase):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/")
 
-    def login(self, wd, username, password):
-        self.open_home_page(wd)
+    def login(self, username, password):
+        wd = self.wd
+        self.open_home_page()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -30,7 +32,8 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
-    def create_contact(self, wd, contact):
+    def create_contact(self, contact):
+        wd = self.wd
         # create new contact
         wd.find_element_by_link_text("add new").click()
         # fill contact form
@@ -83,25 +86,26 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("notes").send_keys(contact.notes)
         # submit created contact
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-        self.return_to_home_page(wd)
+        self.return_to_home_page()
 
-    def return_to_home_page(self, wd):
+    def return_to_home_page(self):
+        wd = self.wd
         wd.find_element_by_link_text("home").click()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element_by_link_text("Logout").click()
 
     def test_add_contact(self):
-        wd = self.wd
-        self.login(wd, username="admin", password="secret")
-        self.create_contact(wd, Contact(firstname="Иван", middlename="Иванович", lastname="Иванов", nickname="Ваня",
+        self.login(username="admin", password="secret")
+        self.create_contact(Contact(firstname="Иван", middlename="Иванович", lastname="Иванов", nickname="Ваня",
                             companyname="Иван и Ко", address="посёлок Иваново", homenumber="543-66-12", worknumber=
                             "+7(456)1-14-15", email1="mail@ivan.io", email2="ivanov@ivan.io",
                             birth_date="//div[@id='content']/form/select[1]//option[16]",
                             birth_month="//div[@id='content']/form/select[2]//option[8]", birth_year="1987",
                             anniversary_date="//div[@id='content']/form/select[3]//option[20]",
                             anniversary_month="//div[@id='content']/form/select[4]//option[12]", notes="Текст заметки"))
-        self.logout(wd)
+        self.logout()
 
     def tearDown(self):
         self.wd.quit()
