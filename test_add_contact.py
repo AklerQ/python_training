@@ -21,6 +21,7 @@ class test_add_contact(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -82,6 +83,7 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("notes").send_keys(contact.notes)
         # submit created contact
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.return_to_home_page(wd)
 
     def return_to_home_page(self, wd):
         wd.find_element_by_link_text("home").click()
@@ -91,7 +93,6 @@ class test_add_contact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.create_contact(wd, Contact(firstname="Иван", middlename="Иванович", lastname="Иванов", nickname="Ваня",
                             companyname="Иван и Ко", address="посёлок Иваново", homenumber="543-66-12", worknumber=
@@ -100,7 +101,6 @@ class test_add_contact(unittest.TestCase):
                             birth_month="//div[@id='content']/form/select[2]//option[8]", birth_year="1987",
                             anniversary_date="//div[@id='content']/form/select[3]//option[20]",
                             anniversary_month="//div[@id='content']/form/select[4]//option[12]", notes="Текст заметки"))
-        self.return_to_home_page(wd)
         self.logout(wd)
 
     def tearDown(self):
