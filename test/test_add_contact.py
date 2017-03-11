@@ -14,7 +14,7 @@ def app(request):
 
 def test_add_contact(app):
     app.session.login(username="admin", password="secret")
-    app.create_contact(Contact(firstname="Иван", middlename="Иванович", lastname="Иванов", nickname="Ваня",
+    app.contact.create(Contact(firstname="Иван", middlename="Иванович", lastname="Иванов", nickname="Ваня",
                         companyname="Иван и Ко", address="посёлок Иваново", homenumber="543-66-12", worknumber=
                         "+7(456)1-14-15", email1="mail@ivan.io", email2="ivanov@ivan.io",
                         birth_date="//div[@id='content']/form/select[1]//option[16]",
