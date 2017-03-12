@@ -12,3 +12,14 @@ def test_add_contact(app):
                         anniversary_date="//div[@id='content']/form/select[3]//option[20]",
                         anniversary_month="//div[@id='content']/form/select[4]//option[12]", notes="Текст заметки"))
     app.session.logout()
+
+
+def test_add_empty_contact(app):
+    app.session.login(username="admin", password="secret")
+    app.contact.create(Contact(firstname="", middlename="", lastname="", nickname="",
+                        companyname="", address="", homenumber="", worknumber=
+                        "", email1="", email2="", birth_date="//div[@id='content']/form/select[1]//option[1]",
+                        birth_month="//div[@id='content']/form/select[2]//option[1]", birth_year="",
+                        anniversary_date="//div[@id='content']/form/select[3]//option[1]",
+                        anniversary_month="//div[@id='content']/form/select[4]//option[1]", notes=""))
+    app.session.logout()
