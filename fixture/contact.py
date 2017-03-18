@@ -5,6 +5,7 @@ class ContactHelper:
 
     def create(self, contact):
         wd = self.app.wd
+        self.app.navigation.turn_to_home_page()
         # create new contact
         wd.find_element_by_link_text("add new").click()
         # fill contact form
@@ -65,13 +66,17 @@ class ContactHelper:
 
     def delete_first_contact(self):
         wd = self.app.wd
+        self.app.navigation.turn_to_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
-        self.app.navigation.return_to_home_page()
+        # Здесь повторно используется метод TURN вместо RETURN, так как после удаления
+        # не доступен переход по ссылке home_page
+        self.app.navigation.turn_to_home_page()
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
+        self.app.navigation.turn_to_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
         self.fill_contact_fields(contact)

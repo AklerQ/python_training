@@ -7,9 +7,13 @@ class NavigationHelper:
         wd = self.app.wd
         wd.get("http://localhost/addressbook/")
 
-    def return_to_home_page(self):
+    def turn_to_home_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("home").click()
+
+    def return_to_home_page(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home page").click()
 
     def open_groups_page(self):
         wd = self.app.wd
