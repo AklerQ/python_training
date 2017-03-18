@@ -16,58 +16,45 @@ class ContactHelper:
 
     def fill_contact_fields(self, contact):
         wd = self.app.wd
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("middlename").click()
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys(contact.middlename)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.lastname)
-        wd.find_element_by_name("nickname").click()
-        wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys(contact.nickname)
-        wd.find_element_by_name("company").click()
-        wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys(contact.companyname)
-        wd.find_element_by_name("address").click()
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(contact.address)
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("middlename", contact.middlename)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("nickname", contact.nickname)
+        self.change_field_value("company", contact.companyname)
+        self.change_field_value("address", contact.address)
         # fill communication data
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(contact.homenumber)
-        wd.find_element_by_name("work").click()
-        wd.find_element_by_name("work").clear()
-        wd.find_element_by_name("work").send_keys(contact.worknumber)
-        wd.find_element_by_name("email").click()
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(contact.email1)
-        wd.find_element_by_name("email2").click()
-        wd.find_element_by_name("email2").clear()
-        wd.find_element_by_name("email2").send_keys(contact.email2)
+        self.change_field_value("home", contact.homenumber)
+        self.change_field_value("work", contact.worknumber)
+        self.change_field_value("email", contact.email1)
+        self.change_field_value("email2", contact.email2)
         # fill dates
         if not wd.find_element_by_xpath(contact.birth_date).is_selected():
             wd.find_element_by_xpath(contact.birth_date).click()
         if not wd.find_element_by_xpath(contact.birth_month).is_selected():
             wd.find_element_by_xpath(contact.birth_month).click()
-        wd.find_element_by_name("byear").click()
-        wd.find_element_by_name("byear").clear()
-        wd.find_element_by_name("byear").send_keys(contact.birth_year)
+        self.change_field_value("byear", contact.birth_year)
         if not wd.find_element_by_xpath(contact.anniversary_date).is_selected():
             wd.find_element_by_xpath(contact.anniversary_date).click()
         if not wd.find_element_by_xpath(contact.anniversary_month).is_selected():
             wd.find_element_by_xpath(contact.anniversary_month).click()
         # fill contact commentary
-        wd.find_element_by_name("notes").click()
-        wd.find_element_by_name("notes").clear()
-        wd.find_element_by_name("notes").send_keys(contact.notes)
+        self.change_field_value("notes", contact.notes)
+
+    def change_field_value(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
+
+    def select_first_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()
 
     def delete_first_contact(self):
         wd = self.app.wd
         self.app.navigation.turn_to_home_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_contact()
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
         # Здесь повторно используется метод TURN вместо RETURN, так как после удаления
@@ -77,8 +64,13 @@ class ContactHelper:
     def edit_first_contact(self, contact):
         wd = self.app.wd
         self.app.navigation.turn_to_home_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_contact()
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
         self.fill_contact_fields(contact)
-        wd.find_element_by_name("update").click()
+        wd.find_element_by_xpath("//input[@name='update'][@value='Update']").click()
         self.app.navigation.return_to_home_page()
+
+    def count_contacts(self):
+        wd = self.app.wd
+        self.app.navigation.turn_to_home_page()
+        return len(wd.find_elements_by_name("selected[]"))
