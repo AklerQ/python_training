@@ -5,20 +5,28 @@ class NavigationHelper:
 
     def open_home_page(self):
         wd = self.app.wd
-        wd.get("http://localhost/addressbook/")
+        if not (len(wd.find_elements_by_name("add")) > 0
+                and wd.find_element_by_xpath("//*[contains(text(), 'Number of results')]")):
+            wd.get("http://localhost/addressbook/")
 
     def turn_to_home_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not (len(wd.find_elements_by_name("add")) > 0
+                and wd.find_element_by_xpath("//*[contains(text(), 'Number of results')]")):
+            wd.find_element_by_link_text("home").click()
 
     def return_to_home_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home page").click()
+        if not (len(wd.find_elements_by_name("add")) > 0
+                and wd.find_element_by_xpath("//*[contains(text(), 'Number of results')]")):
+            wd.find_element_by_link_text("home page").click()
 
     def open_groups_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("groups").click()
+        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("groups").click()
 
     def return_to_groups_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("group page").click()
+        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("group page").click()
