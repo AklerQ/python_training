@@ -16,6 +16,7 @@ class ContactHelper:
 
     def fill_contact_fields(self, contact):
         wd = self.app.wd
+        # fill personal data
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("middlename", contact.middlename)
         self.change_field_value("lastname", contact.lastname)
@@ -64,7 +65,7 @@ class ContactHelper:
     def edit_first_contact(self, contact):
         wd = self.app.wd
         self.app.navigation.turn_to_home_page()
-        self.select_first_contact()
+        # click edit icon
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
         self.fill_contact_fields(contact)
         wd.find_element_by_xpath("//input[@name='update'][@value='Update']").click()
