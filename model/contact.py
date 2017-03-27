@@ -2,7 +2,7 @@ class Contact:
 
     def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None, companyname=None, address=None,
                  homenumber=None, worknumber=None, email1=None, email2=None, birth_date=None, birth_month=None,
-                 birth_year=None, anniversary_date=None, anniversary_month=None, notes=None):
+                 birth_year=None, anniversary_date=None, anniversary_month=None, notes=None, id=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -19,3 +19,10 @@ class Contact:
         self.anniversary_date = anniversary_date
         self.anniversary_month = anniversary_month
         self.notes = notes
+        self.id = id
+
+    def __repr__(self):
+        return "%s:%s:%s" % (self.id, self.firstname, self.lastname)
+
+    def __eq__(self, other):
+        return self.id == other.id and self.firstname == other.firstname and self.lastname == other.lastname
