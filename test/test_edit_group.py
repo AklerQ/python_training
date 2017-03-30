@@ -38,8 +38,8 @@ def test_edit_first_group_header(app):
     input_group.id = old_groups[0].id
     app.group.edit_first_group(input_group)
     # Test validation
+    assert len(old_groups) == app.group.count_groups()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = input_group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
@@ -52,7 +52,7 @@ def test_edit_first_group_footer(app):
     input_group.id = old_groups[0].id
     app.group.edit_first_group(input_group)
     # Test validation
+    assert len(old_groups) == app.group.count_groups()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = input_group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
