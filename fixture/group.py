@@ -18,36 +18,46 @@ class GroupHelper:
         self.app.navigation.return_to_groups_page()
         self.group_cache = None
 
-    def delete_first_group(self):
+    def delete_group_by_index(self, index):
         wd = self.app.wd
         self.app.navigation.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         # submit deletion
         wd.find_element_by_name("delete").click()
         self.app.navigation.return_to_groups_page()
         self.group_cache = None
 
-    def edit_first_group(self, group):
+    def delete_first_group(self):
+        self.delete_group_by_index(0)
+
+    def edit_group_by_index(self, index, input_group):
         wd = self.app.wd
         self.app.navigation.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         # init group edition
         wd.find_element_by_name("edit").click()
         # fill group form
-        self.fill_group_fields(group)
+        self.fill_group_fields(input_group)
         # submit group edition
         wd.find_element_by_name("update").click()
         self.app.navigation.return_to_groups_page()
         self.group_cache = None
 
+    def edit_first_group(self, input_group):
+        self.edit_group_by_index(0, input_group)
+
     def select_first_group(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
-    def fill_group_fields(self, group):
-        self.change_field_value("group_name", group.name)
-        self.change_field_value("group_header", group.header)
-        self.change_field_value("group_footer", group.footer)
+    def select_group_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def fill_group_fields(self, input_group):
+        self.change_field_value("group_name", input_group.name)
+        self.change_field_value("group_header", input_group.header)
+        self.change_field_value("group_footer", input_group.footer)
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
