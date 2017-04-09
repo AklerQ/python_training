@@ -44,7 +44,7 @@ anniversary_month="//div[@id='content']/form/select[4]//option["+random_date(13)
             for i in range(5)]
 
 
-@pytest.mark.parametrize("input_contact", testdata, ids=[repr(x) for x in testdata])
+@pytest.mark.parametrize("input_contact", testdata, ids=[repr(i) for i in testdata])
 def test_add_contact(app, input_contact):
     old_contacts = app.contact.get_contact_list()
     app.contact.create(input_contact)
