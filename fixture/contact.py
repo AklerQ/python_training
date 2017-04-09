@@ -1,5 +1,5 @@
 from model.contact import Contact
-
+import re
 
 class ContactHelper:
 
@@ -29,9 +29,11 @@ class ContactHelper:
         self.change_field_value("address", contact.address)
         # fill communication data
         self.change_field_value("home", contact.homenumber)
+        self.change_field_value("mobile", contact.mobilenumber)
         self.change_field_value("work", contact.worknumber)
         self.change_field_value("email", contact.email1)
         self.change_field_value("email2", contact.email2)
+        self.change_field_value("phone2", contact.secondarynumber)
         # fill dates
         if not wd.find_element_by_xpath(contact.birth_date).is_selected():
             wd.find_element_by_xpath(contact.birth_date).click()
@@ -102,10 +104,9 @@ class ContactHelper:
                 id = cells[0].find_element_by_css_selector('input').get_attribute('value')
                 lastname = cells[1].text
                 firstname = cells[2].text
-                all_phones = cells[5].text.splitlines()
+                all_phones = cells[5].text
                 self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
-                                                  homenumber=all_phones[0], mobilenumber=all_phones[1],
-                                                  worknumber=all_phones[2], secondarynumber=all_phones[3]))
+                                                  all_phones_from_home_page=all_phones))
         return list(self.contact_cache)
 
     def open_contact_view_by_index(self, index):
@@ -133,3 +134,13 @@ class ContactHelper:
         return Contact(id=id, firstname=firstname, lastname=lastname, homenumber=homenumber, mobilenumber=mobilenumber,
                        worknumber=worknumber, secondarynumber=secondarynumber)
 
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_contact_view_by_index(index)
+        text = wd.find_element_by_id("content").text
+        homenumber = re.search("H: (.*)", text).group(1)
+        worknumber = re.search("W: (.*)", text).group(1)
+        mobilenumber = re.search("M: (.*)", text).group(1)
+        secondarynumber = re.search("P: (.*)", text).group(1)
+        return Contact(homenumber=homenumber, mobilenumber=mobilenumber, worknumber=worknumber,
+                       secondarynumber=secondarynumber)
