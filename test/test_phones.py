@@ -10,10 +10,10 @@ def test_phones_on_home_page(app):
 def test_phones_on_contact_view_page(app):
     contact_from_contact_view_page = app.contact.get_contact_from_view_page(0)
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
-    assert contact_from_contact_view_page.homenumber == contact_from_edit_page.homenumber
-    assert contact_from_contact_view_page.mobilenumber == contact_from_edit_page.mobilenumber
-    assert contact_from_contact_view_page.worknumber == contact_from_edit_page.worknumber
-    assert contact_from_contact_view_page.secondarynumber == contact_from_edit_page.secondarynumber
+    assert contact_from_contact_view_page.homenumber == (contact_from_edit_page.homenumber or None)
+    assert contact_from_contact_view_page.worknumber == (contact_from_edit_page.worknumber or None)
+    assert contact_from_contact_view_page.mobilenumber == (contact_from_edit_page.mobilenumber or None)
+    assert contact_from_contact_view_page.secondarynumber == (contact_from_edit_page.secondarynumber or None)
 
 
 def clear(s):
