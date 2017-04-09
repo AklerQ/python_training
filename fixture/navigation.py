@@ -7,7 +7,7 @@ class NavigationHelper:
         wd = self.app.wd
         if not ((len(wd.find_elements_by_link_text("Create account")) > 0)
                 and (len(wd.find_elements_by_link_text("Forgot password")) > 0)):
-            wd.get("http://localhost/addressbook/")
+            wd.get(self.app.base_url)
 
     def turn_to_home_page(self):
         wd = self.app.wd
