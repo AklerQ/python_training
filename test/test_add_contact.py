@@ -15,11 +15,10 @@ def random_number(maxlen):
     return "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 
-def random_email():
+def random_email(maxlen):
     symbols = string.ascii_lowercase + string.digits + "_" + "-"
-    e1 = "".join([random.choice(symbols) for i in range(random.randrange(10))])
-    e2 = "".join([random.choice(symbols) for i in range(random.randrange(6))])
-    return e1 + '@' + e2 + '.ru'
+    return "".join([random.choice(symbols) for i in range(random.randrange(maxlen))] + ['@'] + [random.choice(symbols)
+                                           for i in range(random.randrange(maxlen))] + ['.', 'ru'])
 
 
 def random_date(maxlen):
@@ -36,7 +35,7 @@ testdata = [Contact(firstname="", middlename="", lastname="", nickname="", compa
 Contact(firstname=random_string("firstname", 10), middlename=random_string("middlename", 10), lastname=random_string
 ("lastname", 10), nickname=random_string("nickname", 10), companyname=random_string("companyname", 10), address=
 random_string("address", 25), homenumber=random_number(9), mobilenumber=random_number(12), worknumber=random_number(12),
-email=random_email(), email2=random_email(), email3=random_email(),
+email=random_email(6), email2=random_email(7), email3=random_email(8),
 birth_date="//div[@id='content']/form/select[1]//option["+random_date(32)+"]",
 birth_month="//div[@id='content']/form/select[2]//option["+random_date(13)+"]", birth_year=random_number(4),
 anniversary_date="//div[@id='content']/form/select[3]//option["+random_date(32)+"]", notes=random_string("name", 30),
