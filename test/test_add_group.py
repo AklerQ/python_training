@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
-import pytest
-from data.group_data import constant as testdata
 
 
-@pytest.mark.parametrize("input_group", testdata, ids=[repr(x) for x in testdata])
-def test_add_group(app, input_group):
+def test_add_group(app, data_group_data):
+    input_group = data_group_data
     old_groups = app.group.get_group_list()
     app.group.create(input_group)
     # Test validation
