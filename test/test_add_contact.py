@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from model.contact import Contact
-import pytest
-from data.contact_data import testdata
 
 
-@pytest.mark.parametrize("input_contact", testdata, ids=[repr(i) for i in testdata])
-def test_add_contact(app, input_contact):
+def test_add_contact(app, json_contacts):
+    input_contact = json_contacts
     old_contacts = app.contact.get_contact_list()
     app.contact.create(input_contact)
     # Test validation
