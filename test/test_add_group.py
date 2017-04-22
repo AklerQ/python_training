@@ -2,8 +2,8 @@
 from model.group import Group
 
 
-def test_add_group(app, data_group_data):
-    input_group = data_group_data
+def test_add_group(app, json_groups):
+    input_group = json_groups
     old_groups = app.group.get_group_list()
     app.group.create(input_group)
     # Test validation
