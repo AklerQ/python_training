@@ -84,6 +84,14 @@ class ContactHelper:
         self.app.navigation.return_to_home_page()
         self.contact_cache = None
 
+    def edit_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.app.navigation.open_contact_edit_page_by_id(id)
+        self.fill_contact_fields(contact)
+        wd.find_element_by_xpath("//input[@name='update'][@value='Update']").click()
+        self.app.navigation.return_to_home_page()
+        self.contact_cache = None
+
     def edit_first_contact(self, contact):
         self.edit_contact_by_index(0, contact)
 
@@ -158,3 +166,21 @@ class ContactHelper:
         if secondarynumber is not None:
             secondarynumber = secondarynumber.group(1)
         return Contact(homenumber=homenumber, worknumber=worknumber, mobilenumber=mobilenumber, secondarynumber=secondarynumber)
+
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.navigation.turn_to_home_page()
+        self.select_contact_by_id(id)
+        wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()
+        # Здесь повторно используется метод TURN вместо RETURN, так как после удаления
+        # не доступен переход по ссылке home_page
+        self.app.navigation.turn_to_home_page()
+        self.contact_cache = None
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[id='%s']" % id).click()
+
+    def clean(self, contact):
+        return Contact(id=contact.id, firstname=contact.firstname.strip(), lastname=contact.lastname.strip())

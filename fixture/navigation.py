@@ -30,3 +30,8 @@ class NavigationHelper:
         wd = self.app.wd
         if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
             wd.find_element_by_link_text("group page").click()
+
+    def open_contact_edit_page_by_id(self, id):
+        wd = self.app.wd
+        if not wd.current_url.endswith("/edit.php?id='%s'" % id):
+            wd.get(self.app.base_url+"/edit.php?id='%s'" % id)
