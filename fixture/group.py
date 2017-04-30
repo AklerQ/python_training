@@ -99,3 +99,16 @@ class GroupHelper:
 
     def clean(self, group):
         return Group(id=group.id, name=group.name.strip())
+
+    def edit_group_by_id(self, id, input_group):
+        wd = self.app.wd
+        self.app.navigation.open_groups_page()
+        self.select_group_by_id(id)
+        # init group edition
+        wd.find_element_by_name("edit").click()
+        # fill group form
+        self.fill_group_fields(input_group)
+        # submit group edition
+        wd.find_element_by_name("update").click()
+        self.app.navigation.return_to_groups_page()
+        self.group_cache = None
