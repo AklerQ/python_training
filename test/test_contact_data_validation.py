@@ -1,10 +1,11 @@
 import re
 from random import randrange
+from model.contact import Contact
 
 
-def test_data_on_home_page(app):
-    old_contacts = app.contact.get_contact_list()
-    index = randrange(len(old_contacts))
+def test_random_contact_data_on_home_page(app):
+    contacts = app.contact.get_contact_list()
+    index = randrange(len(contacts))
     contact_from_home_page = app.contact.get_contact_list()[index]
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(index)
     assert contact_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(contact_from_edit_page)
@@ -28,3 +29,16 @@ def merge_phones_like_on_home_page(contact):
 def merge_email_like_on_home_page(contact):
     return "\n".join(filter(lambda x: x != "",
                             filter(lambda x: x is not None, [contact.email, contact.email2, contact.email3])))
+
+
+def test_full_contacts_data_on_home_page(app, db):
+    contacts = app.contact.get_contact_list()
+    count = len(contacts)
+    contacts_from_db = sorted(list(db.get_contact_list()), key=Contact.id_or_max)
+    contacts_from_ui = sorted(list(app.contact.get_contact_list()), key=Contact.id_or_max)
+    for i in range(count):
+        assert contacts_from_ui[i].firstname.strip() == contacts_from_db[i].firstname.strip()
+        assert contacts_from_ui[i].lastname.strip() == contacts_from_db[i].lastname.strip()
+        assert contacts_from_ui[i].address.strip() == contacts_from_db[i].address.strip()
+        assert contacts_from_ui[i].all_email_from_home_page == merge_email_like_on_home_page(contacts_from_db[i])
+        assert contacts_from_ui[i].all_phones_from_home_page == merge_phones_like_on_home_page(contacts_from_db[i])
