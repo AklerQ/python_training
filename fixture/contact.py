@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from model.contact import Contact
 import re
 
@@ -46,6 +47,9 @@ class ContactHelper:
             wd.find_element_by_xpath(contact.anniversary_month).click()
         # fill contact commentary
         self.change_field_value("notes", contact.notes)
+        if not wd.find_element_by_xpath(contact.new_group).is_selected():
+            wd.find_element_by_xpath(contact.new_group).click()
+
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -180,7 +184,16 @@ class ContactHelper:
 
     def select_contact_by_id(self, id):
         wd = self.app.wd
-        wd.find_element_by_css_selector("input[id='%s']" % id).click()
+        wd.find_element_by_id(id).click()
 
     def clean(self, contact):
         return Contact(id=contact.id, firstname=contact.firstname.strip(), lastname=contact.lastname.strip())
+
+    def ui_delete_contact_from_group(self):
+        wd = self.app.wd
+        wd.find_element_by_name("remove").click()
+
+    def delete_contact_from_group(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath('//input[@name="remove"]').click()
+        self.contact_cache = None

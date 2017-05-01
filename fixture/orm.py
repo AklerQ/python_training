@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from pony.orm import *
 from datetime import datetime
 from model.group import Group
@@ -15,6 +16,8 @@ class ORMfixture:
         name = Optional(str, column='group_name')
         header = Optional(str, column='group_header')
         footer = Optional(str, column='group_footer')
+        contacts = Set(lambda: ORMfixture.ORMContact, table="address_in_groups", column="id", reverse="groups",
+                       lazy=True)
 
     class ORMContact(db.Entity):
         _table_ = 'addressbook'
@@ -22,6 +25,8 @@ class ORMfixture:
         firstname = Optional(str, column='firstname')
         lastname = Optional(str, column='lastname')
         deprecated = Optional(datetime, column='deprecated')
+        groups = Set(lambda: ORMfixture.ORMGroup, table="address_in_groups", column="group_id", reverse="contacts",
+                     lazy=True)
 
     def __init__(self, host, name, user, password):
         conv = encoders
@@ -48,3 +53,14 @@ class ORMfixture:
     @db_session
     def get_gcontact_list(self):
         return self.convert_contacts_to_model(select(c for c in ORMfixture.ORMContact if c.deprecated is None))
+
+    @db_session
+    def get_contacts_in_group(self, group):
+        orm_group = list(select(g for g in ORMfixture.ORMGroup if g.id == group.id))[0]
+        return self.convert_contacts_to_model(orm_group.contacts)
+
+    @db_session
+    def get_contacts_not_in_group(self, group):
+        orm_group = list(select(g for g in ORMfixture.ORMGroup if g.id == group.id))[0]
+        return self.convert_contacts_to_model(
+            select(c for c in ORMfixture.ORMContact if c.deprecated is None and orm_group not in c.groups))

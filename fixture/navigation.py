@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class NavigationHelper:
 
     def __init__(self, app):
@@ -33,5 +34,11 @@ class NavigationHelper:
 
     def open_contact_edit_page_by_id(self, id):
         wd = self.app.wd
-        if not wd.current_url.endswith("/edit.php?id='%s'" % id):
-            wd.get(self.app.base_url+"/edit.php?id='%s'" % id)
+        if not wd.current_url.endswith("/edit.php?id=%s" % id):
+            wd.get(self.app.base_url+"/edit.php?id=%s" % id)
+
+    def open_group_page_by_id(self, id):
+        wd = self.app.wd
+        if not wd.current_url.endswith("/?group=%s" % id):
+            wd.get(self.app.base_url+"?group=%s" % id)
+
