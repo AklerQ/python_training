@@ -4,7 +4,7 @@ from model.contact import Contact
 from fixture.orm import ORMfixture
 import random
 
-orm = ORMfixture(host="127.0.0.1", name="addressbook", user="root", password="")
+orm = ORMfixture(host="127.0.0.1", name="addressbook", user="root", password="root")
 
 
 def test_add_contact_to_group(app, db):
