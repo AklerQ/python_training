@@ -189,9 +189,10 @@ class ContactHelper:
     def clean(self, contact):
         return Contact(id=contact.id, firstname=contact.firstname.strip(), lastname=contact.lastname.strip())
 
-    def ui_delete_contact_from_group(self):
+    def add_contact_to_group(self):
         wd = self.app.wd
-        wd.find_element_by_name("remove").click()
+        wd.find_element_by_name("add").click()
+        self.contact_cache = None
 
     def delete_contact_from_group(self):
         wd = self.app.wd

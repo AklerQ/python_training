@@ -51,7 +51,7 @@ class ORMfixture:
             return self.convert_groups_to_model(select(g for g in ORMfixture.ORMGroup))
 
     @db_session
-    def get_gcontact_list(self):
+    def get_contact_list(self):
         return self.convert_contacts_to_model(select(c for c in ORMfixture.ORMContact if c.deprecated is None))
 
     @db_session
@@ -64,3 +64,4 @@ class ORMfixture:
         orm_group = list(select(g for g in ORMfixture.ORMGroup if g.id == group.id))[0]
         return self.convert_contacts_to_model(
             select(c for c in ORMfixture.ORMContact if c.deprecated is None and orm_group not in c.groups))
+
