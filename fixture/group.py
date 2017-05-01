@@ -98,6 +98,10 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
+    def select_group_by_id_for_add_to(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath('//select[@name="to_group"]/option[@value="%s"]' % id).click()
+
     def clean(self, group):
         return Group(id=group.id, name=group.name.strip())
 
